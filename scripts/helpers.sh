@@ -90,7 +90,7 @@ get_interfaces()
     local interfaces=$(get_tmux_option @net_speed_interfaces "")
 
     if [[ -z "$interfaces" ]] ; then
-        if [[ -n is_osx ]]
+        if is_osx
         then
             interfaces=$(netstat -i | tail +2 | sed -E 's/ +/ /g' | cut -d ' ' -f 1 | sort -u | grep "en")
         else
@@ -125,7 +125,7 @@ get_speed()
 {
     local interface=$1
 
-    if [[ -n is_osx ]]
+    if is_osx
     then
         line="$(netstat -b -i -I "$interface" | tail +2 | sed -E 's/ +/ /g' | cut -d ' ' -f 1,7,10 | uniq )" 
         down=$(echo -n $line | cut -d ' ' -f 2)

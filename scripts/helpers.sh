@@ -1,4 +1,4 @@
-#!/bin/bash -
+#!/usr/bin/env bash
 
 ##
 # Varialbes
@@ -93,6 +93,9 @@ get_interfaces()
         if is_osx
         then
             interfaces=$(netstat -i | tail +2 | sed -E 's/ +/ /g' | cut -d ' ' -f 1 | sort -u | grep "en")
+        elif is_freebsd
+        then
+            interfaces=$(ifconfig -l)
         else
             for interface in /sys/class/net/*; do
                 interfaces+=$(echo $(basename $interface) " ");
@@ -131,6 +134,10 @@ get_speed()
         down=$(echo -n $line | cut -d ' ' -f 2)
         up=$(echo -n $line | cut -d ' ' -f 3)
         echo "$down 0 0 0 0 0 0 0 $up"
+    elif is_freebsd
+    then
+        # Only use the <Link#n> row, the address rows are subsets of it
+        netstat -b -i -n -I "$interface" | awk '$3 ~ /^<Link/ { printf "%s 0 0 0 0 0 0 0 %s\n", $8, $11; exit }'
     else
         echo $(cat /proc/net/dev | grep "$interface" | cut -d':' -f 2)
     fi
@@ -138,6 +145,10 @@ get_speed()
 
 is_osx() {
     [ $(uname) == "Darwin" ]
+}
+
+is_freebsd() {
+    [ $(uname) == FreeBSD ]
 }
 
 is_cygwin() {

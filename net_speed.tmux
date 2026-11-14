@@ -1,4 +1,4 @@
-#!/bin/bash -
+#!/usr/bin/env bash
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/scripts/helpers.sh"
@@ -19,7 +19,7 @@ do_interpolation() {
 	result=${result/$net_interpolation/$net_speed}
 	result=${result/$upload_interpolation/$upload_speed}
 
-	echo $result
+	echo "$result"
 }
 
 update_tmux_option() {

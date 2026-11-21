@@ -7,7 +7,7 @@ source "$CURRENT_DIR/scripts/helpers.sh"
 main()
 {
     # TODO Add error checking
-    echo "0" > $DOWNLOAD_FILE
-    echo "0" > $UPLOAD_FILE
+    echo "0 0 0" > $DOWNLOAD_FILE
+    echo "0 0 0" > $UPLOAD_FILE
 }
 main
